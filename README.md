@@ -60,31 +60,58 @@ All AI calls use OpenAI (API key in Convex env); prompts are kept concise and pr
 - **Audit log**: Append-only; all events (e.g. excursion_detected, data_ingestion) go through a single `createAuditLog` mutation. Export to CSV is available from the Audit page.
 - **Observability**: Dashboard KPIs (shipments, open excursions, high-risk count, audit events today) and audit log viewer give a clear view of compliance and system use.
 
-## Getting started
+## Run the app locally
 
-1. **Install and Convex**
+1. **Install dependencies**
    ```bash
    npm install
+   ```
+
+2. **Start Convex (required for backend and env)**
+   In a terminal, run:
+   ```bash
    npx convex dev
    ```
-   Sign in or create a Convex account when prompted. This will create/link a project and run the dev server and codegen.
+   - Sign in or create a Convex account if prompted.
+   - Choose **create a new project** or use an existing one.
+   - This writes `NEXT_PUBLIC_CONVEX_URL` (and optional `CONVEX_DEPLOYMENT`) to `.env.local` and generates `convex/_generated/`. Keep this terminal running (or run it once so codegen runs, then you can stop it if using a cloud deployment).
 
-2. **Environment**
-   - `.env.local`: add `NEXT_PUBLIC_CONVEX_URL=<your Convex deployment URL>` (Convex dev usually sets this).
-   - In the Convex dashboard, set `OPENAI_API_KEY` if you want AI features.
-
-3. **Seed**
-   From the project root (with Convex dev running), run the seed once:
+3. **Seed the database (once)**
+   In another terminal:
    ```bash
    npx convex run seed:run
    ```
-   This creates facilities, Food and Pharma policies, users, sample shipments with temperature readings, excursions, risk scores, audit log entries, and AI insights.
+   This creates facilities, policies, users, sample shipments, readings, excursions, risk scores, audit logs, and AI insights.
 
-4. **Run the app**
+4. **Start the app (Convex + Next.js)**
    ```bash
    npm run dev
    ```
-   Open [http://localhost:3000](http://localhost:3000), then go to **Dashboard**. Use **Data Upload** with the sample files in `data/mock/` (select a facility and policy first).
+   Open [http://localhost:3000](http://localhost:3000). Go to **Dashboard**. If you see “Backend not connected”, ensure step 2 ran and `.env.local` exists, then restart `npm run dev`.
+
+5. **Optional**
+   - In the [Convex dashboard](https://dashboard.convex.dev), set `OPENAI_API_KEY` for AI features.
+   - Use **Data Upload** with files from `data/mock/` (pick a facility and policy first).
+
+## Troubleshooting
+
+### "Failed to load SWC binary" (Windows)
+
+If `npm run dev` fails with **Failed to load SWC binary for win32/x64** or "not a valid Win32 application":
+
+1. **Babel fallback** – This repo includes a `.babelrc` so Next.js uses Babel instead of SWC when the SWC binary fails. Run `npm run dev` again.
+
+2. **Clean reinstall** – If it still fails, reinstall dependencies:
+   ```powershell
+   Remove-Item -Recurse -Force node_modules
+   Remove-Item package-lock.json
+   npm install
+   npm run dev
+   ```
+
+3. **Node architecture** – Use 64-bit Node on 64-bit Windows: `node -p "process.arch"` should print `x64`. If it prints `ia32`, install Node.js x64.
+
+4. **Visual C++ Redistributable** – On Windows, install the [x64 VC++ Redistributable](https://aka.ms/vs/17/release/vc_redist.x64.exe) if you see DLL errors.
 
 ## Project layout (high level)
 

@@ -7,8 +7,8 @@ node_modules/
 .next/
 out/
 
-# Convex
-convex/_generated/
+# Convex (run `npx convex dev` to regenerate; stubs committed so app runs without Convex)
+# convex/_generated/
 
 # Env
 .env

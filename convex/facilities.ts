@@ -6,6 +6,7 @@ export const listFacilities = query({
   returns: v.array(
     v.object({
       _id: v.id("facilities"),
+      _creationTime: v.number(),
       name: v.string(),
       region: v.string(),
       type: v.string(),

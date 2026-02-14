@@ -19,22 +19,30 @@ export default function UploadPage() {
 
   const facilities = useMemo(() => {
     const raw = facilitiesRaw ?? [];
-    const byId = new Map(raw.map((f) => [f._id, f]));
-    const byName = new Map<string, typeof raw[0]>();
-    for (const f of byId.values()) {
-      if (!byName.has(f.name)) byName.set(f.name, f);
+    const seen = new Set<string>();
+    const out: typeof raw = [];
+    for (let i = 0; i < raw.length; i++) {
+      const f = raw[i];
+      if (!seen.has(f.name)) {
+        seen.add(f.name);
+        out.push(f);
+      }
     }
-    return [...byName.values()].sort((a, b) => a.name.localeCompare(b.name));
+    return out.sort((a, b) => a.name.localeCompare(b.name));
   }, [facilitiesRaw]);
 
   const policies = useMemo(() => {
     const raw = policiesRaw ?? [];
-    const byId = new Map(raw.map((p) => [p._id, p]));
-    const byName = new Map<string, typeof raw[0]>();
-    for (const p of byId.values()) {
-      if (!byName.has(p.name)) byName.set(p.name, p);
+    const seen = new Set<string>();
+    const out: typeof raw = [];
+    for (let i = 0; i < raw.length; i++) {
+      const p = raw[i];
+      if (!seen.has(p.name)) {
+        seen.add(p.name);
+        out.push(p);
+      }
     }
-    return [...byName.values()].sort((a, b) => a.name.localeCompare(b.name));
+    return out.sort((a, b) => a.name.localeCompare(b.name));
   }, [policiesRaw]);
 
   async function handleUpload() {

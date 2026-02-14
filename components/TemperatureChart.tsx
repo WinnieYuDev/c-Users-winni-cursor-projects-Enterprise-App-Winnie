@@ -116,7 +116,9 @@ export function TemperatureChart({
             const severe = isSevere(payload.temperature, minSafeTemp, maxSafeTemp);
             return severe ? (
               <circle cx={cx} cy={cy} r={3} fill="#dc2626" stroke="#1e293b" strokeWidth={1} />
-            ) : null;
+            ) : (
+              <circle cx={cx} cy={cy} r={0} />
+            );
           }}
         />
       </LineChart>

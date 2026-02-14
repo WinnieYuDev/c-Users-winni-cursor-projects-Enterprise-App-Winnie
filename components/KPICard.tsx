@@ -1,5 +1,7 @@
 "use client";
 
+import { Card } from "@/components/ui/Card";
+
 interface KPICardProps {
   title: string;
   value: string | number;
@@ -8,20 +10,20 @@ interface KPICardProps {
 }
 
 const variantClasses = {
-  default: "border-slate-600 bg-slate-800/50",
-  success: "border-success/50 bg-success/10",
-  warning: "border-warning/50 bg-warning/10",
-  danger: "border-danger/50 bg-danger/10",
+  default: "border-slate-600",
+  success: "border-success/40 bg-success/5",
+  warning: "border-warning/40 bg-warning/5",
+  danger: "border-danger/40 bg-danger/5",
 };
 
 export function KPICard({ title, value, subtitle, variant = "default" }: KPICardProps) {
   return (
     <div
-      className={`rounded-xl border p-4 shadow-lg ${variantClasses[variant]}`}
+      className={`rounded-md border p-6 shadow-card transition-colors ${variantClasses[variant]}`}
     >
-      <p className="text-sm font-medium text-slate-400">{title}</p>
-      <p className="mt-1 text-2xl font-bold text-white">{value}</p>
-      {subtitle && <p className="mt-0.5 text-xs text-slate-500">{subtitle}</p>}
+      <p className="table-label">{title}</p>
+      <p className="mt-2 text-2xl font-semibold tracking-tight text-white">{value}</p>
+      {subtitle && <p className="mt-1 metadata">{subtitle}</p>}
     </div>
   );
 }

@@ -1,5 +1,10 @@
 "use client";
 
+import { useState, useMemo } from "react";
+import { Table, TableHeader, TableHead, TableBody, TableRow, TableCell } from "@/components/ui/Table";
+import { Badge, severityToBadgeVariant } from "@/components/ui/Badge";
+import { EmptyState } from "@/components/ui/EmptyState";
+
 interface LogEntry {
   _id: string;
   timestamp: number;
@@ -11,54 +16,88 @@ interface LogEntry {
 
 interface AuditLogTableProps {
   logs: LogEntry[];
+  pageSize?: number;
 }
 
-function severityColor(s: string | undefined) {
-  if (!s) return "text-slate-400";
-  switch (s) {
-    case "critical": return "text-danger";
-    case "high": return "text-danger";
-    case "medium": return "text-warning";
-    default: return "text-slate-400";
+export function AuditLogTable({ logs, pageSize = 25 }: AuditLogTableProps) {
+  const [page, setPage] = useState(0);
+  const totalPages = Math.max(1, Math.ceil(logs.length / pageSize));
+  const currentPage = Math.min(page, totalPages - 1);
+  const slice = useMemo(
+    () => logs.slice(currentPage * pageSize, currentPage * pageSize + pageSize),
+    [logs, currentPage, pageSize]
+  );
+
+  if (logs.length === 0) {
+    return (
+      <EmptyState
+        title="No audit entries"
+        message="Audit log will show events as they occur."
+        icon={<EmptyState.BoxIcon />}
+      />
+    );
   }
-}
 
-export function AuditLogTable({ logs }: AuditLogTableProps) {
   return (
-    <div className="rounded-xl border border-slate-600 bg-slate-800/30 overflow-hidden">
-      <div className="overflow-x-auto max-h-80 overflow-y-auto">
-        <table className="w-full text-sm">
-          <thead className="bg-slate-800/80 sticky top-0">
-            <tr>
-              <th className="text-left p-3 text-slate-400 font-medium">Time</th>
-              <th className="text-left p-3 text-slate-400 font-medium">Event</th>
-              <th className="text-left p-3 text-slate-400 font-medium">Severity</th>
-              <th className="text-left p-3 text-slate-400 font-medium">Explanation</th>
-            </tr>
-          </thead>
-          <tbody>
-            {logs.map((log) => (
-              <tr key={log._id} className="border-t border-slate-700 hover:bg-slate-800/50">
-                <td className="p-3 text-slate-300 whitespace-nowrap">
+    <div className="rounded-md border border-slate-600 bg-slate-blue/30 overflow-hidden">
+      <div className="overflow-x-auto max-h-[420px] overflow-y-auto">
+        <Table>
+          <TableHeader>
+            <TableHead>Time</TableHead>
+            <TableHead>Event</TableHead>
+            <TableHead>Severity</TableHead>
+            <TableHead>Explanation</TableHead>
+          </TableHeader>
+          <TableBody>
+            {slice.map((log) => (
+              <TableRow key={log._id}>
+                <TableCell className="whitespace-nowrap metadata">
                   {new Date(log.timestamp).toLocaleString()}
-                </td>
-                <td className="p-3 text-slate-300">
-                  {log.eventType}
+                </TableCell>
+                <TableCell>
+                  <span className="body-text">{log.eventType}</span>
                   {log.ruleViolated && (
-                    <span className="text-slate-500 ml-1">({log.ruleViolated})</span>
+                    <span className="metadata ml-1">({log.ruleViolated})</span>
                   )}
-                </td>
-                <td className={`p-3 font-medium ${severityColor(log.severity)}`}>
-                  {log.severity ?? "—"}
-                </td>
-                <td className="p-3 text-slate-400 max-w-xs truncate">
+                </TableCell>
+                <TableCell>
+                  <Badge variant={severityToBadgeVariant(log.severity)}>
+                    {log.severity ?? "—"}
+                  </Badge>
+                </TableCell>
+                <TableCell className="max-w-xs truncate text-slate-400">
                   {log.aiExplanation ?? "—"}
-                </td>
-              </tr>
+                </TableCell>
+              </TableRow>
             ))}
-          </tbody>
-        </table>
+          </TableBody>
+        </Table>
       </div>
+      {totalPages > 1 && (
+        <div className="flex items-center justify-between border-t border-slate-600 px-4 py-3">
+          <p className="metadata">
+            Showing {currentPage * pageSize + 1}–{Math.min((currentPage + 1) * pageSize, logs.length)} of {logs.length}
+          </p>
+          <div className="flex gap-2">
+            <button
+              type="button"
+              onClick={() => setPage((p) => Math.max(0, p - 1))}
+              disabled={currentPage === 0}
+              className="h-8 px-3 rounded-md border border-slate-600 text-sm text-cool-gray hover:bg-slate-600/50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+            >
+              Previous
+            </button>
+            <button
+              type="button"
+              onClick={() => setPage((p) => Math.min(totalPages - 1, p + 1))}
+              disabled={currentPage >= totalPages - 1}
+              className="h-8 px-3 rounded-md border border-slate-600 text-sm text-cool-gray hover:bg-slate-600/50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+            >
+              Next
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

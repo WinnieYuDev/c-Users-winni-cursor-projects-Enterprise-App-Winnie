@@ -31,5 +31,8 @@
   },
   "optionalDependencies": {
     "@next/swc-win32-x64-msvc": "14.2.18"
+  },
+  "overrides": {
+    "inotify": "file:./stubs/inotify-stub"
   }
 }

@@ -30,22 +30,22 @@ export default function AuditPage() {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between flex-wrap gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-white">Audit Log</h1>
-          <p className="text-slate-400 text-sm mt-1">
+          <h1 className="page-title">Audit Log</h1>
+          <p className="body-text mt-1">
             Append-only audit trail. Export available for regulatory submission.
           </p>
         </div>
         <button
           onClick={handleExport}
           disabled={exporting}
-          className="rounded-lg bg-accent text-white px-4 py-2 text-sm font-medium disabled:opacity-50"
+          className="h-10 px-4 rounded-md bg-accent text-white text-sm font-medium hover:bg-accent/90 disabled:opacity-50 transition-colors"
         >
-          {exporting ? "Exporting..." : "Export CSV"}
+          {exporting ? "Exporting…" : "Export CSV"}
         </button>
       </div>
-      <AuditLogTable logs={auditLogs ?? []} />
+      <AuditLogTable logs={auditLogs ?? []} pageSize={25} />
     </div>
   );
 }

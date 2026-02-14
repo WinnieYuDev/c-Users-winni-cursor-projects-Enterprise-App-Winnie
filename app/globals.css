@@ -3,13 +3,42 @@
 @tailwind utilities;
 
 :root {
-  --primary: #0f172a;
+  --primary: #0b1f33;
+  --slate-blue: #1e293b;
+  --soft-gray: #f1f5f9;
+  --cool-gray: #cbd5e1;
   --accent: #2563eb;
   --warning: #f59e0b;
   --danger: #dc2626;
   --success: #16a34a;
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --shadow-card: 0 1px 3px 0 rgb(0 0 0 / 0.08), 0 1px 2px -1px rgb(0 0 0 / 0.08);
+  --shadow-dropdown: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
 }
 
 body {
-  @apply bg-primary text-gray-100 antialiased;
+  @apply bg-primary text-soft-gray antialiased font-sans;
+}
+
+@layer base {
+  h1, .page-title {
+    @apply text-2xl font-semibold tracking-tight text-white;
+  }
+  h2, .section-title {
+    @apply text-lg font-semibold text-white;
+  }
+  .card-header {
+    @apply text-base font-medium text-white;
+  }
+  .table-label {
+    @apply text-xs font-medium uppercase tracking-wide text-cool-gray;
+  }
+  .body-text {
+    @apply text-sm text-slate-300;
+  }
+  .metadata {
+    @apply text-xs text-slate-500;
+  }
 }

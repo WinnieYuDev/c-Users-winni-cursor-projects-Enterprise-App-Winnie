@@ -1,0 +1,7 @@
+{
+  "name": "inotify",
+  "version": "1.4.6",
+  "description": "Stub for Windows - inotify is Linux-only; parent uses other APIs on Windows.",
+  "main": "index.js",
+  "os": ["win32", "darwin", "linux"]
+}

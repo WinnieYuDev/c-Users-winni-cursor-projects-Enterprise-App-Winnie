@@ -64,7 +64,8 @@ export const run = internalMutation({
     });
 
     // Demo users (one per role) linked to demo company.
-    // To sign in, use Register to create a new company and admin, or add auth accounts separately.
+    // These rows are in `users` only; Convex Auth stores passwords in `authAccounts`.
+    // Seed users cannot sign in until they register (Register creates the auth account). To sign in, use Register.
     await ctx.db.insert("users", {
       email: "admin@coldchain.demo",
       name: "Admin User",

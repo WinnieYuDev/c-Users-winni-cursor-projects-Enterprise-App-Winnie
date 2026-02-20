@@ -1,0 +1,3 @@
+{"location":"GlobalChat.tsx:handleSubmit:beforeSend","message":"AI chat sendMessage called","data":{"messageLen":20,"historyLen":0},"timestamp":1771573363806,"runId":"ai-chat-run","hypothesisId":"H2_H4_H5"}
+{"location":"GlobalChat.tsx:handleSubmit:beforeSend","message":"AI chat sendMessage called","data":{"messageLen":18,"historyLen":0},"timestamp":1771573486404,"runId":"ai-chat-run","hypothesisId":"H2_H4_H5"}
+{"location":"GlobalChat.tsx:handleSubmit:beforeSend","message":"AI chat sendMessage called","data":{"messageLen":20,"historyLen":2},"timestamp":1771573527897,"runId":"ai-chat-run","hypothesisId":"H2_H4_H5"}

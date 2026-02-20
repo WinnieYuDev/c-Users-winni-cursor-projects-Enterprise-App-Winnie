@@ -92,6 +92,7 @@ All AI calls use OpenAI (API key in Convex env); prompts are kept concise and pr
 5. **Optional**
    - In the [Convex dashboard](https://dashboard.convex.dev), set `OPENAI_API_KEY` for AI features.
    - Use **Data Upload** with files from `data/mock/` (pick a facility and policy first).
+   - For a full walkthrough of testing with real data and AI, see [docs/TESTING-WITH-REAL-DATA.md](docs/TESTING-WITH-REAL-DATA.md).
 
 ## Deploy to the cloud (Convex Cloud + Vercel)
 

@@ -32,7 +32,7 @@ export const sendMessage = action({
   handler: async (ctx, args) => {
     const apiKey = process.env.OPENAI_API_KEY;
     if (!apiKey) {
-      return "AI assistant is not configured (missing API key). Please contact support.";
+      return "AI assistant is not configured. Set OPENAI_API_KEY in your Convex dashboard (Settings → Environment Variables), then redeploy.";
     }
 
     const messages: Array<{ role: "system" | "user" | "assistant"; content: string }> = [
@@ -46,23 +46,37 @@ export const sendMessage = action({
     }
     messages.push({ role: "user", content: args.message });
 
-    const res = await fetch("https://api.openai.com/v1/chat/completions", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${apiKey}`,
-      },
-      body: JSON.stringify({
-        model: OPENAI_MODEL,
-        messages,
-        max_tokens: 400,
-        temperature: 0.5,
-      }),
+    const body = JSON.stringify({
+      model: OPENAI_MODEL,
+      messages,
+      max_tokens: 400,
+      temperature: 0.5,
     });
 
+    const maxRetries = 2;
+    let lastRes: Response | null = null;
+
+    for (let attempt = 0; attempt <= maxRetries; attempt++) {
+      if (attempt > 0) {
+        const delayMs = attempt * 2000;
+        await new Promise((r) => setTimeout(r, delayMs));
+      }
+      lastRes = await fetch("https://api.openai.com/v1/chat/completions", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${apiKey}`,
+        },
+        body,
+      });
+      if (lastRes.ok) break;
+      if (lastRes.status !== 429 || attempt === maxRetries) break;
+    }
+
+    const res = lastRes!;
     if (!res.ok) {
       if (res.status === 429) {
-        return "The AI is getting a lot of requests right now. Please wait a minute and try again.";
+        return "Rate limit reached. Please wait a minute and try again, or check usage at platform.openai.com.";
       }
       return `Sorry, I couldn't process that. (Error: ${res.status})`;
     }

@@ -100,15 +100,6 @@ const verticals = [
   },
 ];
 
-const architecturePoints = [
-  "Real-time Convex backend for database, auth, and policy execution",
-  "Configurable risk scoring engine with severity bands",
-  "Immutable append-only audit logs for regulatory submission",
-  "Role-based dashboards (Admin, Supervisor, Viewer)",
-  "Seeded realistic compliance data for demos and evaluation",
-  "Production-ready architecture with subscription scaffolding for enterprise",
-];
-
 export function AboutContent() {
   return (
     <div className="space-y-0 w-full max-w-full">
@@ -186,57 +177,15 @@ export function AboutContent() {
         </div>
       </section>
 
-      {/* 4. Architecture Credibility */}
-      <section className="enterprise-section border-b border-slate-700/80">
-        <h2 className="section-title text-2xl mb-8">Architecture & credibility</h2>
-        <div className="rounded-xl border border-slate-700 bg-slate-800/30 p-8">
-          <ul className="grid grid-cols-1 md:grid-cols-2 gap-4 list-none">
-            {architecturePoints.map((point, i) => (
-              <li key={i} className="flex items-start gap-3 body-text">
-                <span className="flex-shrink-0 w-6 h-6 rounded-full bg-arctic-500/20 text-arctic-400 flex items-center justify-center text-xs font-semibold">
-                  {i + 1}
-                </span>
-                {point}
-              </li>
-            ))}
-          </ul>
-        </div>
-      </section>
-
-      {/* 5. Contact, Follow, Pricing */}
+      {/* 4. Contact */}
       <section className="enterprise-section">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          <div className="rounded-xl border border-slate-700 bg-slate-800/30 p-6">
-            <h3 className="card-header mb-4">Contact</h3>
-            <ul className="text-slate-300 space-y-2 text-sm">
-              <li><strong className="text-slate-200">Address:</strong> 123 Cold Chain Way, Suite 400, Boston, MA 02108</li>
-              <li><strong className="text-slate-200">Phone:</strong> +1 (555) 123-4567</li>
-              <li><strong className="text-slate-200">Email:</strong> contact@thermoguard.example.com</li>
-            </ul>
-          </div>
-          <div className="rounded-xl border border-slate-700 bg-slate-800/30 p-6">
-            <h3 className="card-header mb-4">Follow us</h3>
-            <div className="flex gap-6">
-              <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" className="text-accent hover:underline font-medium text-sm">
-                Twitter / X
-              </a>
-              <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="text-accent hover:underline font-medium text-sm">
-                LinkedIn
-              </a>
-              <a href="https://github.com" target="_blank" rel="noopener noreferrer" className="text-accent hover:underline font-medium text-sm">
-                GitHub
-              </a>
-            </div>
-          </div>
-          <div className="rounded-xl border border-slate-700 bg-slate-800/30 p-6">
-            <h3 className="card-header mb-2">Pricing</h3>
-            <p className="body-text mb-4">Starting at</p>
-            <div className="inline-flex items-baseline gap-2 rounded-lg border border-slate-600 bg-slate-800/50 px-6 py-4">
-              <span className="text-3xl font-bold text-white">$25</span>
-              <span className="text-slate-400">/month</span>
-            </div>
-            <p className="metadata mt-3">Per organization. Dashboards, excursion detection, risk scoring, and AI insights.</p>
-          </div>
+        <div className="rounded-xl border border-slate-700 bg-slate-800/30 p-6 max-w-2xl">
+          <h3 className="card-header mb-4">Contact</h3>
+          <ul className="text-slate-300 space-y-2 text-sm">
+            <li><strong className="text-slate-200">Address:</strong> 123 Cold Chain Way, Suite 400, Boston, MA 02108</li>
+            <li><strong className="text-slate-200">Phone:</strong> +1 (555) 123-4567</li>
+            <li><strong className="text-slate-200">Email:</strong> contact@thermoguard.example.com</li>
+          </ul>
         </div>
       </section>
     </div>

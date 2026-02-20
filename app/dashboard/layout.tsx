@@ -3,9 +3,10 @@
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
+import { useAuthActions } from "@convex-dev/auth/react";
 
 const nav = [
   { href: "/dashboard/about", label: "About", icon: "about" },
@@ -91,8 +92,29 @@ export default function DashboardLayout({
   const pathname = usePathname();
   const router = useRouter();
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+  const [profileOpen, setProfileOpen] = useState(false);
+  const profileRef = useRef<HTMLDivElement>(null);
+  const { signOut } = useAuthActions();
   const hasConvexUrl = typeof process.env.NEXT_PUBLIC_CONVEX_URL === "string" && process.env.NEXT_PUBLIC_CONVEX_URL.length > 0;
   const me = useQuery(api.users.getMe);
+
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (profileRef.current && !profileRef.current.contains(event.target as Node)) {
+        setProfileOpen(false);
+      }
+    }
+    if (profileOpen) {
+      document.addEventListener("click", handleClickOutside);
+      return () => document.removeEventListener("click", handleClickOutside);
+    }
+  }, [profileOpen]);
+
+  async function handleLogout() {
+    setProfileOpen(false);
+    await signOut();
+    router.push("/");
+  }
 
   if (!hasConvexUrl) {
     return (
@@ -198,13 +220,36 @@ export default function DashboardLayout({
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
               </svg>
             </button>
-            <div className="flex items-center gap-2 pl-2 border-l border-slate-600">
-              <div className="w-8 h-8 rounded-full bg-accent/20 flex items-center justify-center text-accent text-sm font-medium">
-                {(me.name ?? me.email ?? "U").charAt(0).toUpperCase()}
-              </div>
-              <span className="text-sm text-white truncate max-w-[120px] hidden md:inline">
-                {me.name ?? me.email ?? "User"}
-              </span>
+            <div className="relative pl-2 border-l border-slate-600" ref={profileRef}>
+              <button
+                type="button"
+                onClick={() => setProfileOpen((o) => !o)}
+                className="flex items-center gap-2 rounded-md py-1 pr-1 text-left hover:bg-slate-600/50 transition-colors focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 focus:ring-offset-primary"
+                aria-expanded={profileOpen}
+                aria-haspopup="true"
+                aria-label="User menu"
+              >
+                <div className="w-8 h-8 rounded-full bg-accent/20 flex items-center justify-center text-accent text-sm font-medium flex-shrink-0">
+                  {(me.name ?? me.email ?? "U").charAt(0).toUpperCase()}
+                </div>
+                <span className="text-sm text-white truncate max-w-[120px] hidden md:inline">
+                  {me.name ?? me.email ?? "User"}
+                </span>
+                <svg className="w-4 h-4 text-slate-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                </svg>
+              </button>
+              {profileOpen && (
+                <div className="absolute right-0 top-full mt-1 py-1 w-40 rounded-md border border-slate-600 bg-slate-800 shadow-dropdown z-50">
+                  <button
+                    type="button"
+                    onClick={handleLogout}
+                    className="w-full px-4 py-2 text-left text-sm text-slate-300 hover:bg-slate-700 hover:text-white transition-colors"
+                  >
+                    Log out
+                  </button>
+                </div>
+              )}
             </div>
           </div>
         </header>

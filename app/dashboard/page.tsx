@@ -10,6 +10,8 @@ import { AuditLogTable } from "@/components/AuditLogTable";
 import { AIInsightCard } from "@/components/AIInsightCard";
 import { Card } from "@/components/ui/Card";
 import { SkeletonCard } from "@/components/ui/Skeleton";
+import { StatusIndicator } from "@/components/ui/StatusIndicator";
+import { Badge, severityToBadgeVariant } from "@/components/ui/Badge";
 
 const EXCURSION_BAND_COLOR = "#F59E0B";
 
@@ -47,7 +49,11 @@ export default function DashboardPage() {
           Array.from({ length: 4 }).map((_, i) => <SkeletonCard key={i} />)
         ) : (
           <>
-            <KPICard title="Active Shipments" value={kpis?.totalShipments ?? "—"} />
+            <KPICard
+              title="Active Shipments"
+              value={kpis?.totalShipments ?? "—"}
+              icon={<StatusIndicator variant="active" label="Live" className="!text-slate-500" />}
+            />
             <KPICard
               title="Temperature Alerts"
               value={kpis?.openExcursions ?? "—"}
@@ -116,15 +122,11 @@ export default function DashboardPage() {
             ) : (
               <ul className="space-y-2">
                 {recentExcursions.slice(0, 5).map((e) => (
-                  <li key={e._id} className="flex items-center justify-between text-sm">
+                  <li key={e._id} className="flex items-center justify-between gap-2 text-sm">
                     <span className="body-text truncate">{e.ruleViolated}</span>
-                    <span
-                      className={`text-xs font-medium ${
-                        e.severity === "high" || e.severity === "critical" ? "text-danger" : "text-warning"
-                      }`}
-                    >
+                    <Badge variant={severityToBadgeVariant(e.severity)} size="sm">
                       {e.severity}
-                    </span>
+                    </Badge>
                   </li>
                 ))}
               </ul>
@@ -149,16 +151,12 @@ export default function DashboardPage() {
               <ul className="space-y-3 max-h-48 overflow-y-auto">
                 {auditLogs.slice(0, 8).map((log) => (
                   <li key={log._id} className="text-sm border-b border-slate-600/50 pb-2 last:border-0 last:pb-0">
-                    <span className="metadata block">{new Date(log.timestamp).toLocaleString()}</span>
+                    <span className="metadata block font-mono text-xs">{new Date(log.timestamp).toLocaleString()}</span>
                     <span className="body-text">{log.eventType}</span>
                     {log.severity && (
-                      <span
-                        className={`ml-2 text-xs ${
-                          log.severity === "high" || log.severity === "critical" ? "text-danger" : "text-warning"
-                        }`}
-                      >
+                      <Badge variant={severityToBadgeVariant(log.severity)} size="sm" className="ml-2">
                         {log.severity}
-                      </span>
+                      </Badge>
                     )}
                   </li>
                 ))}

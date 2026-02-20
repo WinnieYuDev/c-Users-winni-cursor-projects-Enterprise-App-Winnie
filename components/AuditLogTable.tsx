@@ -49,9 +49,12 @@ export function AuditLogTable({ logs, pageSize = 25 }: AuditLogTableProps) {
             <TableHead>Explanation</TableHead>
           </TableHeader>
           <TableBody>
-            {slice.map((log) => (
-              <TableRow key={log._id}>
-                <TableCell className="whitespace-nowrap metadata">
+            {slice.map((log, idx) => (
+              <TableRow
+                key={log._id}
+                className={idx % 2 === 1 ? "bg-slate-800/20" : undefined}
+              >
+                <TableCell className="whitespace-nowrap metadata font-mono text-xs">
                   {new Date(log.timestamp).toLocaleString()}
                 </TableCell>
                 <TableCell>
@@ -65,7 +68,10 @@ export function AuditLogTable({ logs, pageSize = 25 }: AuditLogTableProps) {
                     {log.severity ?? "—"}
                   </Badge>
                 </TableCell>
-                <TableCell className="max-w-xs truncate text-slate-400">
+                <TableCell
+                  className="max-w-xs truncate text-slate-400"
+                  title={log.aiExplanation ?? undefined}
+                >
                   {log.aiExplanation ?? "—"}
                 </TableCell>
               </TableRow>

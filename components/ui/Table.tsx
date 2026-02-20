@@ -23,14 +23,14 @@ export function TableHeader({ children }: { children: React.ReactNode }) {
 
 export function TableHead({ children, className = "" }: { children: React.ReactNode; className?: string }) {
   return (
-    <th className={`text-left p-4 table-label ${className}`}>
+    <th className={`text-left px-4 py-3 table-label ${className}`}>
       {children}
     </th>
   );
 }
 
 export function TableBody({ children }: { children: React.ReactNode }) {
-  return <tbody>{children}</tbody>;
+  return <tbody className="divide-y divide-slate-600/50">{children}</tbody>;
 }
 
 export function TableRow({
@@ -41,12 +41,24 @@ export function TableRow({
   className?: string;
 }) {
   return (
-    <tr className={`border-t border-slate-600/80 hover:bg-slate-blue/50 transition-colors ${className}`}>
+    <tr className={`hover:bg-slate-blue/50 transition-colors duration-150 ${className}`}>
       {children}
     </tr>
   );
 }
 
-export function TableCell({ children, className = "" }: { children: React.ReactNode; className?: string }) {
-  return <td className={`p-4 body-text ${className}`}>{children}</td>;
+export function TableCell({
+  children,
+  className = "",
+  title,
+}: {
+  children: React.ReactNode;
+  className?: string;
+  title?: string;
+}) {
+  return (
+    <td className={`px-4 py-3 body-text ${className}`} title={title}>
+      {children}
+    </td>
+  );
 }

@@ -10,7 +10,7 @@ interface CardProps {
 export function Card({ title, action, children, className = "" }: CardProps) {
   return (
     <div
-      className={`rounded-md border border-slate-600 bg-slate-blue/50 shadow-card p-6 ${className}`}
+      className={`rounded-md border border-slate-600 bg-slate-blue/50 shadow-card p-6 hover:border-slate-500 transition-colors duration-200 ${className}`}
     >
       {(title || action) && (
         <div className="flex items-center justify-between mb-4">

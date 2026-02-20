@@ -1,15 +1,36 @@
-import Image from "next/image";
+"use client";
+
+import {
+  HomeNav,
+  Hero,
+  KpiPreviewStrip,
+  FeatureGrid,
+  DemoPreview,
+  PricingSection,
+  Testimonials,
+  FinalCta,
+  Footer,
+} from "@/components/marketing/HomeSections";
 import { HomeLinks } from "./HomeLinks";
 
 export default function HomePage() {
   return (
-    <main className="min-h-screen flex flex-col items-center justify-center p-8 bg-primary">
-      <Image src="/logo.svg" alt="ThermoGuard" width={64} height={64} className="mb-4" />
-      <h1 className="text-3xl font-bold text-white mb-2">ThermoGuard</h1>
-      <p className="text-gray-400 mb-8 text-center max-w-md">
-        Cold chain compliance for companies that ship food and pharmaceuticals.
-      </p>
-      <HomeLinks />
+    <main className="min-h-screen bg-primary text-slate-200">
+      <HomeNav>
+        <HomeLinks variant="nav" />
+      </HomeNav>
+      <Hero>
+        <HomeLinks variant="hero" />
+      </Hero>
+      <KpiPreviewStrip />
+      <FeatureGrid />
+      <DemoPreview />
+      <PricingSection />
+      <Testimonials />
+      <FinalCta>
+        <HomeLinks variant="footer" />
+      </FinalCta>
+      <Footer />
     </main>
   );
 }

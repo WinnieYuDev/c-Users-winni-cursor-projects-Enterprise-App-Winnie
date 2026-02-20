@@ -74,22 +74,27 @@ export function TemperatureChart({
   return (
     <ResponsiveContainer width="100%" height={height}>
       <LineChart data={points} margin={{ top: 5, right: 10, left: 0, bottom: 5 }}>
-        <CartesianGrid strokeDasharray="3 3" stroke="#334155" />
+        <CartesianGrid strokeDasharray="3 3" stroke="#1e293b" />
         <XAxis
           dataKey="timestamp"
           type="number"
           domain={[xMin, xMax]}
           stroke="#94a3b8"
-          fontSize={11}
+          fontSize={12}
           tickFormatter={(ts) => formatTime(ts)}
         />
-        <YAxis stroke="#94a3b8" fontSize={11} domain={["auto", "auto"]} />
+        <YAxis stroke="#94a3b8" fontSize={12} domain={["auto", "auto"]} />
         <Tooltip
-          contentStyle={{ backgroundColor: "#1e293b", border: "1px solid #334155" }}
+          contentStyle={{
+            backgroundColor: "#1e293b",
+            border: "1px solid #334155",
+            borderRadius: "8px",
+            fontFamily: "ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace",
+          }}
           labelFormatter={(ts) => (typeof ts === "number" ? new Date(ts).toLocaleString() : String(ts))}
           formatter={(value: number) => {
             const severe = isSevere(value, minSafeTemp, maxSafeTemp);
-            return [`${value}°C${severe ? " (out of range)" : ""}`, "Temperature"];
+            return [`${value} °C${severe ? " (out of range)" : ""}`, "Temperature"];
           }}
         />
         <ReferenceArea y1={maxSafeTemp} y2={50} fill="#dc2626" fillOpacity={0.15} />
@@ -112,6 +117,8 @@ export function TemperatureChart({
           dataKey="temperature"
           stroke="#2563EB"
           strokeWidth={2}
+          fill="#2563EB"
+          fillOpacity={0.08}
           dot={({ cx, cy, payload }) => {
             const severe = isSevere(payload.temperature, minSafeTemp, maxSafeTemp);
             return severe ? (

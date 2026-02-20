@@ -6,7 +6,7 @@ export default function AboutPage() {
     <main className="min-h-screen bg-primary text-slate-200">
       <AboutHeader />
 
-      <div className="max-w-4xl mx-auto px-6 py-10">
+      <div className="max-w-6xl mx-auto px-6 py-10">
         <AboutContent />
       </div>
     </main>

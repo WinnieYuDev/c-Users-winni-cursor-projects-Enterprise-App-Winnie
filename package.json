@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "concurrently -n convex,next \"npx convex dev\" \"next dev\"",
+    "dev": "concurrently -n convex,next \"npx convex dev --local --local-force-upgrade\" \"next dev\"",
     "dev:next": "next dev",
     "build": "next build",
     "start": "next start",
